@@ -523,7 +523,7 @@ and so on.
 * [RFC 2617](http://www.ietf.org/rfc/rfc2617.txt) HTTP Authentication: Basic and Digest Access Authentication
 
 ### Related Links
-* [http://packages.qa.debian.org/c/connect-proxy.html](connect-proxy)
+* [connect-proxy](http://packages.qa.debian.org/c/connect-proxy.html)
 * [OpenSSH Home](http://www.openssh.org/)
 * [Proprietary SSH](http://www.ssh.com/)
 * [Using OpenSSH through a SOCKS compatible PROXY on your LAN](http://www.taiyo.co.jp/~gotoh/ssh/openssh-socks.html) (J. Grant)
