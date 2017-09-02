@@ -1,14 +1,14 @@
 # connect
 Clone form https://bitbucket.org/gotoh/connect/
 
-= SSH Proxy Command -- connect.c =
+## SSH Proxy Command -- connect.c
 
-{{{connect.c}}} is the simple relaying command to make network connection
+`connect.c` is the simple relaying command to make network connection
 via SOCKS and https proxy. It is mainly intended to be used as proxy
 command of OpenSSH. You can make SSH session beyond the firewall with
 this command,
 
-Features of {{{connect.c}}} are:
+Features of `connect.c` are:
 
  * Supports SOCKS (version 4/4a/5) and https CONNECT method.
  * Supports NO-AUTH and USERPASS authentication of SOCKS
@@ -20,7 +20,7 @@ Features of {{{connect.c}}} are:
 
 ----
 
-== What is 'proxy command' ==
+## What is 'proxy command'
 
 OpenSSH development team decides to stop supporting SOCKS and any
 other tunneling mechanism. It was aimed to separate complexity to
@@ -35,57 +35,57 @@ relaying to/from standard input/output including iniitial
 communication or negotiation for proxying. Thus, ssh can split out
 proxying code into external command.
 
-The {{{connect.c}}} program was made for this purpose. 
+The `connect.c` program was made for this purpose. 
 
-== How to Use ==
+## How to Use
 
-=== Get Source ===
+### Get Source
 
 Download source code from here.
 If you are MS Windows user, you can get pre-compiled binary from here.
 
-=== Compile and Install ===
+### Compile and Install
 
-In most environment, you can compile {{{connect.c}}} simply. On UNIX
+In most environment, you can compile `connect.c` simply. On UNIX
 environment, you can use cc or gcc. On Windows environment, you can
 use Microsoft Visual C, Borland C or Cygwin gcc.
 
-
-|=//Compiler//    |=//command line to compile//
-| UNIX cc    | {{{cc connect.c -o connect}}}
-| UNIX gcc    | {{{gcc connect.c -o connect}}}
-| Solaris    | {{{gcc connect.c -o connect -lnsl -lsocket -lresolv}}}
-| Microsoft Visual C/C++ | {{{cl connect.c wsock32.lib advapi32.lib}}}
-| Borland C    | {{{bcc32 connect.c wsock32.lib advapi32.lib}}}
-| Cygwin gcc    | {{{gcc connect.c -o connect}}}
-| Mac OS/Darwin    | {{{gcc connect.c -o connect -lresolv}}}
+| Compiler        | command line to compile   |
+| --------   | :-----:  |
+| UNIX cc    | `cc connect.c -o connect`|
+| UNIX gcc    | `gcc connect.c -o connect`|
+| Solaris    | `gcc connect.c -o connect -lnsl -lsocket -lresolv`|
+| Microsoft Visual C/C++ | `cl connect.c wsock32.lib advapi32.lib`|
+| Borland C    | `bcc32 connect.c wsock32.lib advapi32.lib`|
+| Cygwin gcc    | `gcc connect.c -o connect`|
+| Mac OS/Darwin    | `gcc connect.c -o connect -lresolv`|
 
 To install **connect** command, simply copy compiled binary to
 directory in your PATH (ex. /usr/local/bin). Like this:
 
-{{{
-  $ cp connect /usr/local/bin
-}}}
+```
+$ cp connect /usr/local/bin
+```
 
-=== Modify your ~/.ssh/config ===
+### Modify your ~/.ssh/config
 
-Modify your {{{~/.ssh/config}}} file to use connect command as proxy
+Modify your `~/.ssh/config` file to use connect command as proxy
 command. For the case of SOCKS server is running on firewall host
 socks.local.net with port 1080, you can add ProxyCommand option in
-{{{~/.ssh/config}}}, like this:
+`~/.ssh/config`, like this:
 
-{{{
-  Host remote.outside.net
+```
+Host remote.outside.net
     ProxyCommand connect -S socks.local.net %h %p
-}}}
+```
 
-{{{%h}}} and {{{%p}}} will be replaced on invoking proxy command with
+`%h` and `%p` will be replaced on invoking proxy command with
 target hostname and port specified to SSH command.
 
 If you hate writing many entries of remote hosts, following example
 may help you.
 
-{{{
+```
   ## Outside of the firewall, use connect command with SOCKS conenction.
   Host *
     ProxyCommand connect -S socks.local.net %h %p
@@ -93,11 +93,11 @@ may help you.
   ## Inside of the firewall, use connect command with direct connection.
   Host *.local.net
     ProxyCommand connect %h %p
-}}}
+```
 
 If you want to use http proxy, use -H option instead of -S option in examle above, like this:
 
-{{{
+```
   ## Outside of the firewall, with HTTP proxy
   Host *
     ProxyCommand connect -H proxy.local.net:8080 %h %p
@@ -105,22 +105,22 @@ If you want to use http proxy, use -H option instead of -S option in examle abov
   ## Inside of the firewall, direct
   Host *.local.net
     ProxyCommand connect %h %p
-}}}
+```
 
-=== Use SSH ===
+### Use SSH
 
 After editing your ~/.ssh/config file, you are ready to use ssh. You
 can execute ssh without any special options as if remote host is IP
 reachable host. Following is an example to execute hostname command on
 host remote.outside.net.
 
-{{{
+```
   $ ssh remote.outside.net hostname
   remote.outside.net
   $
-}}}
+```
 
-=== Have trouble? ===
+### Have trouble?
 
 If you have trouble, execute connect command from command line with -d
 option to see what is happened. Some debug message may appear and
@@ -128,7 +128,7 @@ reports progress. This information may tell you what is wrong. In this
 example, error has occurred on authentication stage of SOCKS5
 protocol.
 
-{{{
+```
   $ connect -d -S socks.local.net unknown.remote.outside.net 110
   DEBUG: relay_method = SOCKS (2)
   DEBUG: relay_host=socks.local.net
@@ -153,20 +153,20 @@ protocol.
   DEBUG: <<< 01 01
   ERROR: Authentication faield.
   FATAL: failed to begin relaying via SOCKS.
-}}}
+```
 
-== More Detail ==
+## More Detail
 
 Command line usage is here:
 
-{{{
+```
   usage:  connect [-dnhs45] [-R resolve] [-p local-port] [-w sec]
           [-H [user@]proxy-server[:port]]
           [-S [user@]socks-server[:port]]
           host port
-}}}
+```
 
-//host// and //port// is target hostname and port-number to connect. 
+_host_ and _port_ is target hostname and port-number to connect. 
 
 **-H** option specify hostname and port number of http proxy server to
 relay. If port is omitted, 80 is used. You can specify this value by
@@ -205,21 +205,21 @@ and check request to and response from server.
 You can omit port argument when program name is special format
 containing port number itself. For example:
 
-{{{
+```
   $ ln -s connect connect-25
   $ ./connect-25 smtphost.outside.net
   220 smtphost.outside.net ESMTP Sendmail
   QUIT
   221 2.0.0 smtphost.remote.net closing connection
   $
-}}}
+```
 
 This example means that the command name "connect-25" contains port
 number 25 so you can omit 2nd argument (and used if specified
 explicitly).
 
 
-== Specifying user name via environment variables ==
+## Specifying user name via environment variables
 
 There are 5 environemnt variables to specify user name without command
 line option. This mechanism is usefull for the user who using another
@@ -233,6 +233,7 @@ user name different from system account.
 
 Following table describes how user name is determined. Left most number is order to check. If variable is not defined, check next variable, and so on. 
 
+
 |=|=SOCKS v5|=SOCKS v4|=HTTP proxy|
 |1|SOCKS5_USER|SOCKS4_USER|HTTP_PROXY_USER|
 |2|SOCKS_USER|SOCKS_USER ||
@@ -241,7 +242,7 @@ Following table describes how user name is determined. Left most number is order
 
 
 
-== Specifying password via environment variables ==
+## Specifying password via environment variables
 
 There are 5 environemnt variables to specify password. If you use this
 feature, please note that it is not secure way.
@@ -267,18 +268,18 @@ tty input.
 
 
 
-== Limitations ==
-=== SOCKS5 authentication ===
+## Limitations
+### SOCKS5 authentication
 
 Only NO-AUTH and USER/PASSWORD authentications are supported. GSSAPI
 authentication (RFC 1961) and other draft authentications (CHAP, EAP,
 MAF, etc.) is not supported.
 
-=== HTTP authentication ===
+### HTTP authentication
 
 BASIC authentication is supported but DIGEST authentication is not.
 
-=== Switching proxy server ===
+### Switching proxy server
 
 There is no mechanism to switch proxy server regarding to PC
 environment. This limitation might be bad news for mobile user. Since
@@ -295,7 +296,7 @@ Tucker). This script costs executing ifconfig and grep to detect
 current environment, but it works. (NOTE: you should modify addresses
 if you use it.)
 
-{{{
+```
   #!/bin/sh
   ## ~/bin/myconnect --- Proxy server switching wrapper
 
@@ -307,13 +308,13 @@ if you use it.)
       opts="-s"
   fi
   exec /usr/local/bin/connect $opts $@
-}}}
+```
 
 
-== Tips ==
+## Tips
 
 
-=== Proxying socket connection ===
+### Proxying socket connection
 
 In usual, {{{connect.c}}} relays network connection to/from standard
 input/output. By specifying **-p** option, however, {{{connect.c}}}
@@ -323,15 +324,15 @@ start relaying between both network stream.
 
 This feature may be useful for the program which is hard to SOCKSify.
 
-=== Use with ssh-askpass command ===
+### Use with ssh-askpass command
 
-{{{connect.c}}} ask you password when authentication is required. If
+`connect.c` ask you password when authentication is required. If
 you are using on tty/pty terminal, connect can input from terminal
 with prompt. But you can also use ssh-askpass program to input
 password. If you are graphical environment like X Window or MS
 Windows, and program does not have tty/pty, and environment variable
-{{{SSH_ASKPASS}}} is specified, then {{{connect.c}}} invoke command
-specified by environment variable {{{SSH_ASKPASS}}} to input
+`SSH_ASKPASS` is specified, then `connect.c` invoke command
+specified by environment variable `SSH_ASKPASS` to input
 password. ssh-askpass program might be installed if you are using
 OpenSSH on UNIX environment. On Windows environment, pre-compiled
 binary is available from here.
@@ -343,7 +344,7 @@ hard to send passphrase to connect command (and also ssh) because
 external command is invoked on hidden terminal and do I/O with this
 terminal. Using ssh-askpass avoids this problem.
 
-=== Use for Network Stream of Emacs ===
+### Use for Network Stream of Emacs
 
 Although {{{connect.c}}} is made for OpenSSH, it is generic and
 independent from OpenSSH. So we can use this for other purpose. For
@@ -357,21 +358,21 @@ With this code, you can use {{{relay-open-network-stream}}} function
 instead of open-network-stream to make network connection. See top
 comments of source for more detail.
 
-=== Remote resolver ===
+### Remote resolver
 
 If you are SOCKS4 user on UNIX environment, you might want specify
 nameserver to resolve remote hostname. You can do it specifying **-R**
 option followed by IP address of resolver.
 
-=== Hopping Connection via SSH ===
+### Hopping Connection via SSH
 
 Conbination of ssh and connect command have more interesting
 usage. Following command makes indirect connection to host2:port from
 your current host via host1.
 
-{{{
+```
   ssh host1 connect host2 port
-}}}
+```
 
 This method is useful for the situations like:
 
@@ -384,18 +385,18 @@ barriered by firewall. Fortunately, I have ssh account on internal
 host and allowed using SOCKS5 on firewall from outside. So I use
 following command to connect to NNTP service.
 
-{{{
+```
   $ ssh host1 connect news 119
   200 news.my-office.com InterNetNews NNRP server INN 2.3.2 ready (posting ok).
   quit
   205 .
   $
-}}}
+```
 
 By combinating hopping connection and relay.el, I can read NetNews
 using [[http://www.gohome.org/wl/|Wanderlust]] on Emacs at home.
 
-{{{
+```
               |
       External (internet) | Internal (office)
               |
@@ -404,7 +405,7 @@ using [[http://www.gohome.org/wl/|Wanderlust]] on Emacs at home.
   +------+           +----------+          +-------+           +-----------+
    emacs <-------------- ssh ---------------> sshd <-- connect --> nntpd
      <-- connect --> socksd <-- SOCKS -->
-}}}
+```
 
 As an advanced example, you can use SSH hopping as fetchmail's plug-in
 program to access via secure tunnel. This method requires that connect
@@ -414,16 +415,16 @@ host using SSH then execute connect program on remote host to relay
 conversation with pop server. Thus fetchmail can retrieve mails in
 secure.
 
-{{{
+```
   poll mail-server
   protocol pop3
   plugin "ssh %h connect localhost %p"
   username "username"
   password "password"
-}}}
+```
 
 
-== Break The More Restricted Wall ==
+## Break The More Restricted Wall
 
 If firewall does not provide SOCKS nor HTTPS other than port 443, you
 cannot break the wall in usual way. But if you have you own host which
@@ -434,7 +435,7 @@ have logged-in to extenal home machine, you can execute connect as
 second hop to make connection from your own host to final target host,
 like this:
 
-{{{
+```
   $ cat ~/.ssh/config
   Host home
     ProxyCommand connect -H firewall:8080 %h 443
@@ -447,14 +448,14 @@ like this:
   You are logged in to server!
   server# exit
   internal$
-}}}
+```
 
 This way is similar to "Hopping connection via SSH" except configuring
 outer sshd as waiting at port 443 (https). This means that you have a
 capability to break the strongly restricted wall if you have own host
 out side of the wall.
 
-{{{
+```
               |
     Internal (office) | External (internet)
               |
@@ -464,14 +465,14 @@ out side of the wall.
      <------------------ ssh --------------------->sshd:443
       <-- connect --> http-proxy <-- https:443 -->                      any
                            connect <-- tcp -->  port
-}}}
+```
 
 NOTE: If you wanna use this, you should give up hosting https service at port 443 on you external host 'home'. 
 
 
-== F.Y.I. ==
+## F.Y.I.
 
-=== Difference between SOCKS versions. ===
+### Difference between SOCKS versions.
 
 SOCKS version 4 is first popular implementation which is documented
 [[http://www.socks.nec.com/protocol/socks4.protocol|here]]. Since this
@@ -485,7 +486,7 @@ version 4 and 4a. There is no compativility with previous
 versions. Instead, there's some improvement: IPv6 support, request by
 hostname, UDP proxying, etc.
 
-=== Configuration to use HTTPS ===
+### Configuration to use HTTPS
 
 Many http proxy servers implementation supports https CONNECT method
 (SLL). You might add configuration to allow using https. For the
@@ -494,14 +495,14 @@ a multi-purpose application level gateway, or a proxy server) , you
 should add https to REMITTABLE parameter to allow HTTP-Proxy like
 this:
 
-{{{
+```
   delegated -Pxxxx ...... REMITTABLE='+,https' ...
-}}}
+```
 
 For the case of Squid, you should allow target ports via https by ACL,
 and so on.
 
-=== SOCKS5 Servers ===
+### SOCKS5 Servers
 
 [[http://www.socks.nec.com/refsoftware.html|NEC SOCKS Reference Implementation]]
 ... Reference implementation of SOKCS server and library.  \\
@@ -510,7 +511,7 @@ and so on.
 [[http://www.delegate.org/delegate/|DeleGate]]
 ... DeleGate is multi function proxy service provider. DeleGate 5.x.x or earlier can be SOCKS4 server, and 6.x.x can be SOCKS5 and SOCKS4 server. and 7.7.0 or later can be SOCKS5 and SOCKS4a server. \\
 
-=== Specifications ===
+### Specifications
 
 [[http://www.socks.nec.com/protocol/socks4.protocol|socks4.protocol.txt]]
 ... SOCKS: A protocol for TCP proxy across firewalls \\
@@ -525,14 +526,14 @@ and so on.
 [[http://www.ietf.org/rfc/rfc2617.txt|RFC 2617]]
 ... HTTP Authentication: Basic and Digest Access Authentication \\
 
-=== Related Links ===
+### Related Links
 
 * [[http://packages.qa.debian.org/c/connect-proxy.html]]
 * [[http://www.openssh.org/|OpenSSH Home]]
 * [[http://www.ssh.com/|Proprietary SSH]]
 * [[http://www.taiyo.co.jp/~gotoh/ssh/openssh-socks.html|Using OpenSSH through a SOCKS compatible PROXY on your LAN]] (J. Grant)
 
-=== Similars ===
+### Similars
 
 * [[http://proxytunnel.sourceforge.net/|Proxy Tunnel]] -- Proxying command using https CONNECT.
 * [[http://www.snurgle.org/~griffon/ssh-https-tunnel|stunnel]] -- Proxy through an https tunnel (Perl script)
