@@ -86,24 +86,24 @@ If you hate writing many entries of remote hosts, following example
 may help you.
 
 ```
-  ## Outside of the firewall, use connect command with SOCKS conenction.
-  Host *
+## Outside of the firewall, use connect command with SOCKS conenction.
+Host *
     ProxyCommand connect -S socks.local.net %h %p
 
-  ## Inside of the firewall, use connect command with direct connection.
-  Host *.local.net
+## Inside of the firewall, use connect command with direct connection.
+Host *.local.net
     ProxyCommand connect %h %p
 ```
 
 If you want to use http proxy, use -H option instead of -S option in examle above, like this:
 
 ```
-  ## Outside of the firewall, with HTTP proxy
-  Host *
+## Outside of the firewall, with HTTP proxy
+Host *
     ProxyCommand connect -H proxy.local.net:8080 %h %p
 
-  ## Inside of the firewall, direct
-  Host *.local.net
+## Inside of the firewall, direct
+Host *.local.net
     ProxyCommand connect %h %p
 ```
 
@@ -115,9 +115,9 @@ reachable host. Following is an example to execute hostname command on
 host remote.outside.net.
 
 ```
-  $ ssh remote.outside.net hostname
-  remote.outside.net
-  $
+$ ssh remote.outside.net hostname
+remote.outside.net
+$
 ```
 
 ### Have trouble?
@@ -129,30 +129,30 @@ example, error has occurred on authentication stage of SOCKS5
 protocol.
 
 ```
-  $ connect -d -S socks.local.net unknown.remote.outside.net 110
-  DEBUG: relay_method = SOCKS (2)
-  DEBUG: relay_host=socks.local.net
-  DEBUG: relay_port=1080
-  DEBUG: relay_user=gotoh
-  DEBUG: socks_version=5
-  DEBUG: socks_resolve=REMOTE (2)
-  DEBUG: local_type=stdio
-  DEBUG: dest_host=unknown.remote.outside.net
-  DEBUG: dest_port=110
-  DEBUG: Program is $Revision: 1.20 $
-  DEBUG: connecting to xxx.xxx.xxx.xxx:1080
-  DEBUG: begin_socks_relay()
-  DEBUG: atomic_out()  [4 bytes]
-  DEBUG: >>> 05 02 00 02
-  DEBUG: atomic_in() [2 bytes]
-  DEBUG: <<< 05 02
-  DEBUG: auth method: USERPASS
-  DEBUG: atomic_out()  [some bytes]
-  DEBUG: >>> xx xx xx xx ...
-  DEBUG: atomic_in() [2 bytes]
-  DEBUG: <<< 01 01
-  ERROR: Authentication faield.
-  FATAL: failed to begin relaying via SOCKS.
+$ connect -d -S socks.local.net unknown.remote.outside.net 110
+DEBUG: relay_method = SOCKS (2)
+DEBUG: relay_host=socks.local.net
+DEBUG: relay_port=1080
+DEBUG: relay_user=gotoh
+DEBUG: socks_version=5
+DEBUG: socks_resolve=REMOTE (2)
+DEBUG: local_type=stdio
+DEBUG: dest_host=unknown.remote.outside.net
+DEBUG: dest_port=110
+DEBUG: Program is $Revision: 1.20 $
+DEBUG: connecting to xxx.xxx.xxx.xxx:1080
+DEBUG: begin_socks_relay()
+DEBUG: atomic_out()  [4 bytes]
+DEBUG: >>> 05 02 00 02
+DEBUG: atomic_in() [2 bytes]
+DEBUG: <<< 05 02
+DEBUG: auth method: USERPASS
+DEBUG: atomic_out()  [some bytes]
+DEBUG: >>> xx xx xx xx ...
+DEBUG: atomic_in() [2 bytes]
+DEBUG: <<< 01 01
+ERROR: Authentication faield.
+FATAL: failed to begin relaying via SOCKS.
 ```
 
 ## More Detail
@@ -160,10 +160,10 @@ protocol.
 Command line usage is here:
 
 ```
-  usage:  connect [-dnhs45] [-R resolve] [-p local-port] [-w sec]
-          [-H [user@]proxy-server[:port]]
-          [-S [user@]socks-server[:port]]
-          host port
+usage:  connect [-dnhs45] [-R resolve] [-p local-port] [-w sec]
+	[-H [user@]proxy-server[:port]]
+	[-S [user@]socks-server[:port]]
+	host port
 ```
 
 _host_ and _port_ is target hostname and port-number to connect. 
@@ -206,12 +206,12 @@ You can omit port argument when program name is special format
 containing port number itself. For example:
 
 ```
-  $ ln -s connect connect-25
-  $ ./connect-25 smtphost.outside.net
-  220 smtphost.outside.net ESMTP Sendmail
-  QUIT
-  221 2.0.0 smtphost.remote.net closing connection
-  $
+$ ln -s connect connect-25
+$ ./connect-25 smtphost.outside.net
+220 smtphost.outside.net ESMTP Sendmail
+QUIT
+221 2.0.0 smtphost.remote.net closing connection
+$
 ```
 
 This example means that the command name "connect-25" contains port
@@ -225,20 +225,23 @@ There are 5 environemnt variables to specify user name without command
 line option. This mechanism is usefull for the user who using another
 user name different from system account.
 
-|=SOCKS5_USER | Used for SOCKS v5 access.
-|=SOCKS4_USER | Used for SOCKS v4 access.
-|=SOCKS_USER | Used for SOCKS v5 or v4 access and varaibles above are not defined.
-|=HTTP_PROXY_USER | Used for HTTP proxy access.
-|=CONNECT_USER | Used for all type of access if all above are not defined. 
+| environemnt | |
+| --------   | :-----:  |
+| SOCKS5_USER | Used for SOCKS v5 access. |
+| SOCKS4_USER | Used for SOCKS v4 access. |
+| SOCKS_USER | Used for SOCKS v5 or v4 access and varaibles above are not defined. |
+| HTTP_PROXY_USER | Used for HTTP proxy access. |
+| CONNECT_USER | Used for all type of access if all above are not defined.  |
 
 Following table describes how user name is determined. Left most number is order to check. If variable is not defined, check next variable, and so on. 
 
 
-|=|=SOCKS v5|=SOCKS v4|=HTTP proxy|
-|1|SOCKS5_USER|SOCKS4_USER|HTTP_PROXY_USER|
-|2|SOCKS_USER|SOCKS_USER ||
-|3|CONNECT_USER|CONNECT_USER|CONNECT_USER|
-|4|(ask)|(ask)|(ask)|
+|SOCKS v5|SOCKS v4|HTTP proxy|
+|--------| :-----:  | :-----:  |
+|SOCKS5_USER|SOCKS4_USER|HTTP_PROXY_USER|
+|SOCKS_USER|SOCKS_USER ||
+|CONNECT_USER|CONNECT_USER|CONNECT_USER|
+|(ask)|(ask)|(ask)|
 
 
 
@@ -247,11 +250,13 @@ Following table describes how user name is determined. Left most number is order
 There are 5 environemnt variables to specify password. If you use this
 feature, please note that it is not secure way.
 
-|=SOCKS5_PASSWD | Used for SOCKS v5 access. This variables is compatible with NEC SOCKS implementation. |
-|=SOCKS5_PASSWORD | Used for SOCKS v5 access if SOCKS5_PASSWD is not defined. |
-|=SOCKS_PASSWORD | Used for SOCKS v5 (or v4) access all above is not defined. |
-|=HTTP_PROXY_PASSWORD | Used for HTTP proxy access. |
-|=CONNECT_PASSWORD | Used for all type of access if all above are not defined.  |
+| environemnt | |
+| --------   | :-----:  |
+| SOCKS5_PASSWD | Used for SOCKS v5 access. This variables is compatible with NEC SOCKS implementation. |
+| SOCKS5_PASSWORD | Used for SOCKS v5 access if SOCKS5_PASSWD is not defined. |
+| SOCKS_PASSWORD | Used for SOCKS v5 (or v4) access all above is not defined. |
+| HTTP_PROXY_PASSWORD | Used for HTTP proxy access. |
+| CONNECT_PASSWORD | Used for all type of access if all above are not defined.  |
 
 
 Following table describes how password is determined. Left most number
@@ -259,11 +264,12 @@ is order to check. If variable is not defined, check next variable,
 and so on. Finally ask to user interactively using external program or
 tty input.
 
-|   |=SOCKS v5         |=HTTP proxy          |
-| 1 | SOCKS5_PASSWD    | HTTP_PROXY_PASSWORD |
-| 2 | SOCKS_PASSWORD   | SOCKS_PASSWORD      |
-| 3 | CONNECT_PASSWORD | CONNECT_PASSWORD    |
-| 4 | (ask to user)    | (ask to user)       |
+| SOCKS v5         | HTTP proxy          |
+| --------   | :-----:  |
+| SOCKS5_PASSWD    | HTTP_PROXY_PASSWORD |
+| SOCKS_PASSWORD   | SOCKS_PASSWORD      |
+| CONNECT_PASSWORD | CONNECT_PASSWORD    |
+| (ask to user)    | (ask to user)       |
 
 
 
@@ -288,7 +294,7 @@ although this feature is already requested. Please advice me if there
 is good idea of detecting environment to swich and simple way to
 specify conditioned directive of servers.
 
-One tricky workaround exists. It is replacing {{{~/.ssh/config}}} file by
+One tricky workaround exists. It is replacing `~/.ssh/config` file by
 script on ppp up/down.
 
 There's another example of wrapper script (contributed by Darren
@@ -297,17 +303,17 @@ current environment, but it works. (NOTE: you should modify addresses
 if you use it.)
 
 ```
-  #!/bin/sh
-  ## ~/bin/myconnect --- Proxy server switching wrapper
+#!/bin/sh
+## ~/bin/myconnect --- Proxy server switching wrapper
 
-  if ifconfig eth0 |grep "inet addr:192\.168\.1" >/dev/null; then
-      opts="-S 192.168.1.1:1080"  
-  elif ifconfig eth0 |grep "inet addr:10\." >/dev/null; then
-      opts="-H 10.1.1.1:80"
-  else
-      opts="-s"
-  fi
-  exec /usr/local/bin/connect $opts $@
+if ifconfig eth0 |grep "inet addr:192\.168\.1" >/dev/null; then
+	opts="-S 192.168.1.1:1080"  
+elif ifconfig eth0 |grep "inet addr:10\." >/dev/null; then
+	opts="-H 10.1.1.1:80"
+else
+	opts="-s"
+fi
+exec /usr/local/bin/connect $opts $@
 ```
 
 
@@ -317,7 +323,7 @@ if you use it.)
 ### Proxying socket connection
 
 In usual, {{{connect.c}}} relays network connection to/from standard
-input/output. By specifying **-p** option, however, {{{connect.c}}}
+input/output. By specifying **-p** option, however, `connect.c`
 relays local network stream instead of standard input/output. With
 this option, connect command waits connection from other program, then
 start relaying between both network stream.
@@ -346,7 +352,7 @@ terminal. Using ssh-askpass avoids this problem.
 
 ### Use for Network Stream of Emacs
 
-Although {{{connect.c}}} is made for OpenSSH, it is generic and
+Although `connect.c` is made for OpenSSH, it is generic and
 independent from OpenSSH. So we can use this for other purpose. For
 example, you can use this command in Emacs to open network connection
 with remote host over the firewall via SOCKS or HTTP proxy without
@@ -354,7 +360,7 @@ SOCKSifying Emacs itself.
 
 There is sample code: http://www.meadowy.org/~gotoh/lisp/relay.el
 
-With this code, you can use {{{relay-open-network-stream}}} function
+With this code, you can use `relay-open-network-stream` function
 instead of open-network-stream to make network connection. See top
 comments of source for more detail.
 
@@ -371,7 +377,7 @@ usage. Following command makes indirect connection to host2:port from
 your current host via host1.
 
 ```
-  ssh host1 connect host2 port
+ssh host1 connect host2 port
 ```
 
 This method is useful for the situations like:
@@ -386,25 +392,25 @@ host and allowed using SOCKS5 on firewall from outside. So I use
 following command to connect to NNTP service.
 
 ```
-  $ ssh host1 connect news 119
-  200 news.my-office.com InterNetNews NNRP server INN 2.3.2 ready (posting ok).
-  quit
-  205 .
-  $
+$ ssh host1 connect news 119
+200 news.my-office.com InterNetNews NNRP server INN 2.3.2 ready (posting ok).
+quit
+205 .
+$
 ```
 
 By combinating hopping connection and relay.el, I can read NetNews
-using [[http://www.gohome.org/wl/|Wanderlust]] on Emacs at home.
+using [Wanderlust](http://www.gohome.org/wl/) on Emacs at home.
 
 ```
-              |
-      External (internet) | Internal (office)
-              |
-  +------+           +----------+          +-------+           +-----------+
-  | HOME |           | firewall |          | host1 |           | NNTP host |
-  +------+           +----------+          +-------+           +-----------+
-   emacs <-------------- ssh ---------------> sshd <-- connect --> nntpd
-     <-- connect --> socksd <-- SOCKS -->
+          |
+  External (internet) | Internal (office)
+          |
++------+           +----------+          +-------+           +-----------+
+| HOME |           | firewall |          | host1 |           | NNTP host |
++------+           +----------+          +-------+           +-----------+
+emacs <-------------- ssh ---------------> sshd <-- connect --> nntpd
+ <-- connect --> socksd <-- SOCKS -->
 ```
 
 As an advanced example, you can use SSH hopping as fetchmail's plug-in
@@ -416,11 +422,11 @@ conversation with pop server. Thus fetchmail can retrieve mails in
 secure.
 
 ```
-  poll mail-server
-  protocol pop3
-  plugin "ssh %h connect localhost %p"
-  username "username"
-  password "password"
+poll mail-server
+protocol pop3
+plugin "ssh %h connect localhost %p"
+username "username"
+password "password"
 ```
 
 
@@ -436,18 +442,18 @@ second hop to make connection from your own host to final target host,
 like this:
 
 ```
-  $ cat ~/.ssh/config
-  Host home
+$ cat ~/.ssh/config
+Host home
     ProxyCommand connect -H firewall:8080 %h 443
-  Host server
+Host server
     ProxyCommand ssh home connect %h %p 
-  $ ssh home
-  You are logged in to home!
-  home# exit
-  internal$ ssh server
-  You are logged in to server!
-  server# exit
-  internal$
+$ ssh home
+You are logged in to home!
+home# exit
+internal$ ssh server
+You are logged in to server!
+server# exit
+internal$
 ```
 
 This way is similar to "Hopping connection via SSH" except configuring
@@ -475,10 +481,10 @@ NOTE: If you wanna use this, you should give up hosting https service at port 44
 ### Difference between SOCKS versions.
 
 SOCKS version 4 is first popular implementation which is documented
-[[http://www.socks.nec.com/protocol/socks4.protocol|here]]. Since this
+[here](http://www.socks.nec.com/protocol/socks4.protocol). Since this
 protocol provide IP address based requesting, client program should
 resolve name of outer host by itself. Version 4a (documented
-[[http://www.socks.nec.com/protocol/socks4a.protocol|here]]) is
+[here](http://www.socks.nec.com/protocol/socks4a.protocol)) is
 enhanced to allow request by hostname instead of IP address.
 
 SOCKS version 5 is re-designed protocol stands on experience of
@@ -490,52 +496,38 @@ hostname, UDP proxying, etc.
 
 Many http proxy servers implementation supports https CONNECT method
 (SLL). You might add configuration to allow using https. For the
-example of [[http://www.delegate.org/delegate/|DeleGate]] (DeleGate is
+example of [DeleGate](http://www.delegate.org/delegate/) (DeleGate is
 a multi-purpose application level gateway, or a proxy server) , you
 should add https to REMITTABLE parameter to allow HTTP-Proxy like
 this:
 
 ```
-  delegated -Pxxxx ...... REMITTABLE='+,https' ...
+delegated -Pxxxx ...... REMITTABLE='+,https' ...
 ```
 
 For the case of Squid, you should allow target ports via https by ACL,
 and so on.
 
 ### SOCKS5 Servers
-
-[[http://www.socks.nec.com/refsoftware.html|NEC SOCKS Reference Implementation]]
-... Reference implementation of SOKCS server and library.  \\
-[[http://www.inet.no/dante/index.html|Dante]]
-... Dante is free implementation of SOKCS server and library. Many enhancements and modulalized. \\
-[[http://www.delegate.org/delegate/|DeleGate]]
-... DeleGate is multi function proxy service provider. DeleGate 5.x.x or earlier can be SOCKS4 server, and 6.x.x can be SOCKS5 and SOCKS4 server. and 7.7.0 or later can be SOCKS5 and SOCKS4a server. \\
+* [NEC SOCKS Reference Implementation](http://www.socks.nec.com/refsoftware.html) Reference implementation of SOKCS server and library.
+* [Dante](http://www.inet.no/dante/index.html) Dante is free implementation of SOKCS server and library. Many enhancements and modulalized.
+* [DeleGate](http://www.delegate.org/delegate/) DeleGate is multi function proxy service provider. DeleGate 5.x.x or earlier can be SOCKS4 server, and 6.x.x can be SOCKS5 and SOCKS4 server. and 7.7.0 or later can be SOCKS5 and SOCKS4a server.
 
 ### Specifications
 
-[[http://www.socks.nec.com/protocol/socks4.protocol|socks4.protocol.txt]]
-... SOCKS: A protocol for TCP proxy across firewalls \\
-[[http://www.socks.nec.com/protocol/socks4a.protocol|socks4a.protocol.txt]]
-... SOCKS 4A: A Simple Extension to SOCKS 4 Protocol \\
-[[http://www.socks.nec.com/rfc/rfc1928.txt|RFC 1928]]
-... SOCKS Protocol Version 5 \\
-[[http://www.socks.nec.com/rfc/rfc1929.txt|RFC 1929]]
-... Username/Password Authentication for SOCKS V5 \\
-[[http://www.ietf.org/rfc/rfc2616.txt|RFC 2616]]
-... Hypertext Transfer Protocol -- HTTP/1.1 \\
-[[http://www.ietf.org/rfc/rfc2617.txt|RFC 2617]]
-... HTTP Authentication: Basic and Digest Access Authentication \\
+* [socks4.protocol.txt](http://www.socks.nec.com/protocol/socks4.protocol) SOCKS: A protocol for TCP proxy across firewalls
+* [socks4a.protocol.txt](http://www.socks.nec.com/protocol/socks4a.protocol) SOCKS 4A: A Simple Extension to SOCKS 4 Protocol
+* [RFC 1928](http://www.socks.nec.com/rfc/rfc1928.txt) SOCKS Protocol Version 5
+* [RFC 1929](http://www.socks.nec.com/rfc/rfc1929.txt) Username/Password Authentication for SOCKS V5
+* [RFC 2616](http://www.ietf.org/rfc/rfc2616.txt) Hypertext Transfer Protocol -- HTTP/1.1
+* [RFC 2617](http://www.ietf.org/rfc/rfc2617.txt) HTTP Authentication: Basic and Digest Access Authentication
 
 ### Related Links
-
-* [[http://packages.qa.debian.org/c/connect-proxy.html]]
-* [[http://www.openssh.org/|OpenSSH Home]]
-* [[http://www.ssh.com/|Proprietary SSH]]
-* [[http://www.taiyo.co.jp/~gotoh/ssh/openssh-socks.html|Using OpenSSH through a SOCKS compatible PROXY on your LAN]] (J. Grant)
+* [http://packages.qa.debian.org/c/connect-proxy.html](connect-proxy)
+* [OpenSSH Home](http://www.openssh.org/)
+* [Proprietary SSH](http://www.ssh.com/)
+* [Using OpenSSH through a SOCKS compatible PROXY on your LAN](http://www.taiyo.co.jp/~gotoh/ssh/openssh-socks.html) (J. Grant)
 
 ### Similars
-
-* [[http://proxytunnel.sourceforge.net/|Proxy Tunnel]] -- Proxying command using https CONNECT.
-* [[http://www.snurgle.org/~griffon/ssh-https-tunnel|stunnel]] -- Proxy through an https tunnel (Perl script)
-
-
+* [Proxy Tunnel](http://proxytunnel.sourceforge.net/) -- Proxying command using https CONNECT.
+* [stunnel](http://www.snurgle.org/~griffon/ssh-https-tunnel) -- Proxy through an https tunnel (Perl script)
