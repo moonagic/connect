@@ -58,7 +58,7 @@ use Microsoft Visual C, Borland C or Cygwin gcc.
 | Microsoft Visual C/C++ | `cl connect.c wsock32.lib advapi32.lib`|
 | Borland C    | `bcc32 connect.c wsock32.lib advapi32.lib`|
 | Cygwin gcc    | `gcc connect.c -o connect`|
-| Mac OS/Darwin    | ~~`gcc connect.c -o connect -lresolv`~~ `make`|
+| Mac OS/Darwin    | ~~`gcc connect.c -o connect -lresolv`*error in mac OS 10.13*~~ `make`|
 
 To install **connect** command, simply copy compiled binary to
 directory in your PATH (ex. /usr/local/bin). Like this:
