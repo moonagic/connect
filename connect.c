@@ -54,9 +54,7 @@
  *      $ gcc connect.c -o connect -lwsock32 -liphlpapi
  *
  *  on Mac OS X environment:
- *      $ gcc connect.c -o connect -lresolv
- *    or
- *      $ gcc connect.c -o connect -DBIND_8_COMPAT=1
+ *      $ make
  *
  * How To Use
  * ==========
